@@ -1,42 +1,72 @@
-GALAXY WEATHER
+# Galaxy Weather
 
-- Galaxy Weather is an app that shows the current weather and a 5-day forecast. This app has been developed using React and the OpenWeather API.
-- Galaxy Weather es una aplicación que muestra el clima actual y la previsión de los próximos cinco días. La aplicación ha sido desarrollada con React y utiliza la API de OpenWeather.
+A modern weather application that displays current weather conditions and a 5-day forecast. Built with React and powered by the OpenWeather API.
 
-REQUISITES - REQUISITOS
-* Node.js (v16 or superior – v16 o superior)
-https://nodejs.org/
-* npm (Node.js package manager – gestor de paquetes de Node.js)
-https://www.npmjs.com/
-* API key for OpenWeather – Una clave de API de OpenWeather
-https://openweathermap.org/api
+Una aplicación meteorológica moderna que muestra las condiciones climáticas actuales y el pronóstico de 5 días. Desarrollada con React y alimentada por la API de OpenWeather.
 
-INSTALLATION - INSTALACIÓN
-1. Clone repository -- clonar repositorio
+
+## Prerequisites / Requisitos
+
+Before you begin, ensure you have the following installed:
+Antes de comenzar, asegúrate de tener instalado lo siguiente:
+
+- **Node.js** (v16 or higher / v16 o superior)  
+(https://nodejs.org/)
+
+- **npm** (Node.js package manager / gestor de paquetes de Node.js)  
+(https://www.npmjs.com/)
+
+- **OpenWeather API Key** (Clave de API de OpenWeather)  
+(https://openweathermap.org/api)
+
+## Installation / Instalación
+
+### 1. Clone the repository / Clonar el repositorio
+
+```bash
 git clone https://github.com/jvvdix/GalaxyWeather.git
 cd GalaxyWeather
+```
 
-2. Install dependencies -- instalar dependencias
+### 2. Install dependencies / Instalar dependencias
+
+```bash
 npm install
+```
 
-3. Configurate environment variables -- configurar variables del entorno
-Rename the file as .env and change my_api_key to your API key  -- renombra el archivo .env.example a .env y cambie my_api_key por clave de API:
+### 3. Configure environment variables / Configurar variables de entorno
 
-4. Run the app -- ejecuta la aplicación
+1. Rename `.env.example` to `.env` / Renombra `.env.example` a `.env`
+2. Replace `my_api_key` with your actual OpenWeather API key / Reemplaza `my_api_key` con tu clave real de la API de OpenWeather
+
+```env
+VITE_API_KEY=your_actual_api_key_here
+```
+
+### 4. Run the application / Ejecutar la aplicación
+
+```bash
 npm run dev
+```
 
-5. Open your browser and go to http://localhost:5173 -- abre tu navegador y ve a http://localhost:5173
+### 5. Open your browser / Abrir el navegador
 
+Navigate to [http://localhost:5173](http://localhost:5173)
+Ve a [http://localhost:5173](http://localhost:5173)
 
-PROJECT STRUCTURE - ESTRUCTURA DEL PROYECTO
+## Project Structure / Estructura del Proyecto
+
+```
 GalaxyWeather/
-├── index.html             # main HTML file - archivo HTML principal
-├── public/                 # static files - archivos estáticos
-├── src/                    # source code - código fuente
-│   ├── components/         # UI components - componentes UI
-│   ├── services/           # API calls - llamadas a la API
-│   └── App.jsx             # main component - componente principal
-├── .env.example            # environment variables example - ejemplo de variables de entorno
-├── package.json            # dependencies and scripts - dependencias y scripts
-└── vite.config.js          # Vite config - configuración de Vite
+├── index.html             # Main HTML file - Archivo HTML principal
+├── public/                # Static files - Archivos estáticos
+├── src/                   # Source code - Código fuente
+│   ├── components/        # UI components - Componentes UI
+│   ├── services/          # API calls - Llamadas a la API
+│   └── App.jsx            # Main component - Componente principal
+├── .env.example           # Environment variables example - Ejemplo de variables de entorno
+├── package.json           # Dependencies and scripts - Dependencias y scripts
+├── vite.config.js         # Vite configuration - Configuración de Vite
+└── README.md              # Project documentation - Documentación del proyecto
+```
 
