@@ -4,21 +4,24 @@ import CityHistoryDropdown from "./components/CityHistoryDropdown";
 import WeatherDisplay from "./components/WeatherDisplay";
 import ForecastList from "./components/ForecastList";
 
+// importar servicios -- import services
+import { getCurrentWeather } from "./services/weatherService";
+import { getForecast } from "./services/forecastService";
+
 function App() {
   const [searchInput, setSearchInput] = useState(""); //texto escrito por el cliente -- text written by the client
   const [weatherData, setWeatherData] = useState(null); //datos del clima -- weather data
   const defaultCity = "murcia"; //ciudad por defecto -- default city
   const [city, setCity] = useState(() => {
-    const saved = sessionStorage.getItem("weather_city_history");
+    const saved = localStorage.getItem("weather_city_history"); //recupera historial de local -- retrieves local history
     if (saved) {
       const parsed = JSON.parse(saved);
-      return parsed.length > 0 ? parsed[0] : defaultCity;
+      return parsed.length > 0 ? parsed[0] : defaultCity; //si hay datos, muestra el mas reciente, sino la ciudad por defecto -- if there is data, shows the most recent, otherwise the default city
     }
     return defaultCity;
-  }); //ciudad por defecto que ahora es Murcia -- default city, Murcia in this case
+  });
   const [forecast, setForecast] = useState([]); //datos pronostico con array -- forecast data with array
   const [error, setError] = useState(null); //control de errores -- error control
-  const API_KEY = import.meta.env.VITE_API_KEY; //api key protegida -- protected api key
   const [loading, setLoading] = useState(false); //cargando -- loading
   const [weekdayFormat, setWeekdayFormat] = useState("short"); //formato día semana -- weekday format
   const weatherDetailsRef = useRef(null);
@@ -28,7 +31,7 @@ function App() {
 
   // historial de ciudades -- cities history
   const [cityHistory, setCityHistory] = useState(() => {
-    const saved = sessionStorage.getItem("weather_city_history");
+    const saved = localStorage.getItem("weather_city_history");
     return saved ? JSON.parse(saved) : [];
   });
 
@@ -73,42 +76,28 @@ function App() {
     setLoading(true);
 
     try {
-      const url = `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${API_KEY}&units=metric&lang=en`;
-      const response = await fetch(url);
-      const data = await response.json(); //parse datos a JSON -- parse data to JSON
-
-      if (data.cod !== 200) {
-        setError("City not found. Type another city."); //si no se encuentra la ciudad -- if the city is not found
-        setLoading(false);
-        return;
-      }
-
+      const data = await getCurrentWeather(cityName);
       setWeatherData(data);
       setCity(cityName);
 
       // guarda ciudad en historial -- saves city in history
       setCityHistory((prevHistory) => {
         const updated = [
-          cityName,
+          cityName, // añade la ciudad buscada al principio del array -- adds searched city to  beginning of array
           ...prevHistory.filter(
+            //añade el resto de ciudades que ya estaban -- adds previously existing cities
+
             (c) => c.toLowerCase() !== cityName.toLowerCase() //evitar duplicados -- avoid repetitions
           ),
         ];
-        sessionStorage.setItem("weather_city_history", JSON.stringify(updated));
-        return updated;
+        localStorage.setItem("weather_city_history", JSON.stringify(updated));
+        return updated; //devuelve array actualizado -- returns updated array
       });
 
-      // llamada a la API para próximos días -- API call for the next days data
-      const forecastResponse = await fetch(
-        `https://api.openweathermap.org/data/2.5/forecast?q=${cityName}&appid=${API_KEY}&units=metric&lang=en`
-      );
-      const forecastData = await forecastResponse.json();
-      const dailyForecast = forecastData.list.filter(
-        (item, index) => index % 8 === 0
-      );
+      const dailyForecast = await getForecast(cityName);
       setForecast(dailyForecast);
     } catch (error) {
-      setError("Sorry, we couldn't retrieve the weather data"); //en caso de error -- in case there is an error
+      setError(error.message || "Sorry, we couldn't retrieve the weather data"); //en caso de error -- in case there is an error
     } finally {
       setLoading(false);
     }
