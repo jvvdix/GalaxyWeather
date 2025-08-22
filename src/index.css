@@ -162,28 +162,7 @@ body {
   justify-content: center;
 }
 
-.weather-scrollbar {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  height: 12px;
-  width: 100%;
-  background: rgba(255, 255, 255, 0.08);
-  border-radius: 6px;
-  overflow: hidden;
-}
-
-.weather-scrollbar-thumb {
-  height: 100%;
-  background: #778089;
-  border-radius: 6px;
-  position: absolute;
-  transition: background 0.3s;
-}
-
-.weather-scrollbar-thumb:hover {
-  background: #525455;
-}
+/* prox. días --  forecast */
 
 .forecast {
   border-top: 1px solid rgba(255, 255, 255, 0.2);
@@ -305,6 +284,7 @@ body {
   transform: translateY(0);
 }
 
+/* lista del dropwdon -- dropdown list */
 .city-history-list {
   position: absolute;
   top: 100%;
@@ -373,6 +353,7 @@ body {
   background: rgba(59, 130, 246, 0.2);
 }
 
+/* slideDown historial moviminento -- slidedown movement history */
 @keyframes slideDown {
   from {
     opacity: 0;
