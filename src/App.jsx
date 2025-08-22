@@ -5,7 +5,7 @@ function App() {
   const [weatherData, setWeatherData] = useState(null); //datos del clima -- weather data
   const defaultCity = "murcia";
   const [city, setCity] = useState(() => {
-    const saved = localStorage.getItem("weather_city_history");
+    const saved = sessionStorage.getItem("weather_city_history");
     if (saved) {
       const parsed = JSON.parse(saved);
       return parsed.length > 0 ? parsed[0] : defaultCity;
@@ -24,7 +24,7 @@ function App() {
 
   // historial ce ciudades -- cities history
   const [cityHistory, setCityHistory] = useState(() => {
-    const saved = localStorage.getItem("weather_city_history");
+    const saved = sessionStorage.getItem("weather_city_history");
     return saved ? JSON.parse(saved) : [];
   });
   // fondo depende del clima obtenido -- background depends on the obtained weather
@@ -97,7 +97,7 @@ function App() {
             (c) => c.toLowerCase() !== cityName.toLowerCase() //evitar duplicados -- avoid repetitions
           ),
         ];
-        localStorage.setItem("weather_city_history", JSON.stringify(updated));
+        sessionStorage.setItem("weather_city_history", JSON.stringify(updated));
         return updated;
       });
 
@@ -129,9 +129,9 @@ function App() {
   useEffect(() => {
     const checkMobile = () => {
       if (window.matchMedia("(max-width: 500px)").matches) {
-        setWeekdayFormat("long"); //si es móvil, el día escrito entero -- if it's mobile, the day is written in full
+        setWeekdayFormat("short"); //si es móvil, el día escrito entero -- if it's mobile, the day is written in full
       } else {
-        setWeekdayFormat("short"); //si es desktop, el día abreviado -- if it's desktop, the day is abbreviated
+        setWeekdayFormat("long"); //si es desktop, el día abreviado -- if it's desktop, the day is abbreviated
       }
     };
     checkMobile();
@@ -139,6 +139,7 @@ function App() {
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
+  // efecto para cambiar el fondo del body según el clima
   useEffect(() => {
     if (weatherData && weatherData.weather && weatherData.weather[0]) {
       const gradient = getBackgroundGradient(
@@ -148,6 +149,7 @@ function App() {
       document.body.style.background = gradient;
     }
 
+    // cleanup: restaurar fondo por defecto al desmontar
     return () => {
       document.body.style.background =
         "linear-gradient(to bottom right, #778089, #525455)";
@@ -316,24 +318,32 @@ function App() {
         </div>
       )}
 
+      {/* prox días -- forecast */}
+
       {forecast.length > 0 && (
         <div className="forecast">
-          <h3 className="forecast-header">5-Day Forecast</h3>
-          <div className="forecast-days">
+          <h3 className="forecast-header">Forecast</h3>
+          <div className="forecast-list">
             {forecast.map((day, index) => (
               <div key={index} className="forecast-item">
-                <p className="forecast-day">
-                  {new Date(day.dt * 1000).toLocaleDateString("en-US", {
-                    // días de la semana se mostrarán en inglés -- weekdays will be in English
-                    weekday: weekdayFormat,
-                  })}
-                </p>
-                <img
-                  src={`https://openweathermap.org/img/wn/${day.weather[0].icon}@2x.png`}
-                  alt={day.weather[0].description}
-                  className="forecast-icon"
-                />
-                <p className="forecast-temp">{Math.round(day.main.temp)}°C</p>
+                <div className="forecast-day-info">
+                  <p className="forecast-day">
+                    {new Date(day.dt * 1000).toLocaleDateString("en-US", {
+                      weekday: weekdayFormat,
+                    })}
+                  </p>
+                </div>
+
+                <div className="forecast-weather">
+                  <img
+                    src={`https://openweathermap.org/img/wn/${day.weather[0].icon}@2x.png`}
+                    alt={day.weather[0].description}
+                    className="forecast-icon"
+                  />
+                  <p className="forecast-description">
+                    {Math.round(day.main.temp)}°C
+                  </p>
+                </div>
               </div>
             ))}
           </div>
