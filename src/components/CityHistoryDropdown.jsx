@@ -26,8 +26,8 @@ export default function CityHistoryDropdown({
               <button
                 className="history-btn"
                 onClick={() => {
-                  fetchWeatherData(cityItem); //buscar clima de ciudad en historial -- search weather for history city
-                  setHistoryOpen(false); //cerrar historial -- close dropdown
+                  fetchWeatherData(cityItem);
+                  setHistoryOpen(false);
                 }}
               >
                 {cityItem}

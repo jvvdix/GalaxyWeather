@@ -3,8 +3,6 @@ import React from "react";
 export default function WeatherDetails({
   weatherData,
   weatherDetailsRef,
-  scrollbarWidth,
-  scrollbarLeft,
   handleWeatherDetailsScroll,
 }) {
   return (

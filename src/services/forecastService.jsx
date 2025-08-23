@@ -7,7 +7,7 @@ export async function getForecast(cityName) {
     );
     const data = await response.json();
     if (data.cod !== "200") throw new Error("Forecast not found.");
-    // filtrar un forecast diario
+
     const dailyForecast = data.list.filter((item, index) => index % 8 === 0);
     return dailyForecast;
   } catch (error) {

@@ -13,14 +13,14 @@ function App() {
   const [weatherData, setWeatherData] = useState(null); //datos del clima -- weather data
   const defaultCity = "murcia"; //ciudad por defecto -- default city
   const [city, setCity] = useState(() => {
-    const saved = localStorage.getItem("weather_city_history"); //recupera historial de local -- retrieves local history
+    const saved = localStorage.getItem("weather_city_history");
     if (saved) {
       const parsed = JSON.parse(saved);
-      return parsed.length > 0 ? parsed[0] : defaultCity; //si hay datos, muestra el mas reciente, sino la ciudad por defecto -- if there is data, shows the most recent, otherwise the default city
+      return parsed.length > 0 ? parsed[0] : defaultCity;
     }
     return defaultCity;
   });
-  const [forecast, setForecast] = useState([]); //datos pronostico con array -- forecast data with array
+  const [forecast, setForecast] = useState([]); //datos pronostico  -- forecast data
   const [error, setError] = useState(null); //control de errores -- error control
   const [loading, setLoading] = useState(false); //cargando -- loading
   const [weekdayFormat, setWeekdayFormat] = useState("short"); //formato día semana -- weekday format
@@ -68,7 +68,7 @@ function App() {
     }
   };
 
-  // función que hace llamada a la API para obtener datos  -- function that calls the API to get data
+  // función llamada a API   -- function that calls the API
   const fetchWeatherData = async (cityName) => {
     setWeatherData(null); //limpiamos posibles datos previos -- clear possible previous data
     setForecast([]);
@@ -103,26 +103,26 @@ function App() {
     }
   };
 
-  //al abrir la app se inicializa esta función-- this function is initialised when opening the app
+  //función inicializada al abrir app -- this function is initialised when opening the app
   useEffect(() => {
     fetchWeatherData(city);
   }, []);
 
-  //para comprobar si es vista móvil o desktop -- to check if it's mobile or desktop view
+  //vista móvil o desktop -- mobile or desktop view
   useEffect(() => {
     const checkMobile = () => {
       if (window.matchMedia("(max-width: 500px)").matches) {
-        setWeekdayFormat("short"); //si es móvil, día abreviado -- if it's mobile, day short format
+        setWeekdayFormat("short"); //móvil, día abreviado -- if it's mobile, day short format
       } else {
-        setWeekdayFormat("long"); //si es desktop, día completo -- if it's desktop, day long format
+        setWeekdayFormat("long"); // desktop, día completo -- if it's desktop, day long format
       }
     };
     checkMobile();
-    window.addEventListener("resize", checkMobile); //para actualizar si cambia el tamaño -- if screen size changes
+    window.addEventListener("resize", checkMobile); // actualizar si cambia el tamaño -- if screen size changes
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
-  // efecto para cambiar el fondo segun el clima -- effect to change bg according to weather
+  // cambiar el fondo segun el clima -- change bg according to weather
   useEffect(() => {
     if (weatherData && weatherData.weather && weatherData.weather[0]) {
       const gradient = getBackgroundGradient(
@@ -140,33 +140,8 @@ function App() {
 
   function handleSearch(e) {
     e.preventDefault();
-    fetchWeatherData(searchInput); //buscar el clima de la ciudad introducida -- search weather for entered city
+    fetchWeatherData(searchInput);
   }
-
-  function updateWeatherScrollbar() {
-    const el = weatherDetailsRef.current;
-    if (!el) return;
-    const visible = el.offsetWidth;
-    const total = el.scrollWidth;
-    const scrollLeft = el.scrollLeft;
-    if (total <= visible) {
-      setScrollbarWidth(100);
-      setScrollbarLeft(0);
-    } else {
-      setScrollbarWidth((visible / total) * 100);
-      setScrollbarLeft((scrollLeft / total) * 100);
-    }
-  }
-
-  function handleWeatherDetailsScroll() {
-    updateWeatherScrollbar();
-  }
-
-  useEffect(() => {
-    updateWeatherScrollbar();
-    window.addEventListener("resize", updateWeatherScrollbar);
-    return () => window.removeEventListener("resize", updateWeatherScrollbar);
-  }, [weatherData]);
 
   return (
     <div className="wrapper">
@@ -194,7 +169,6 @@ function App() {
         <WeatherDisplay
           weatherData={weatherData}
           weatherDetailsRef={weatherDetailsRef}
-          handleWeatherDetailsScroll={handleWeatherDetailsScroll}
         />
       )}
 

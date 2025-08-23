@@ -10,7 +10,7 @@ export default function SearchForm({
       {/* input para escribir ciudad -- input to type city */}
       <input
         type="text"
-        value={searchInput} //valor del input -- input value
+        value={searchInput}
         onChange={(e) => setSearchInput(e.target.value)}
         placeholder="Enter city name"
         className="search-input"
