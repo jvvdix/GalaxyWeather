@@ -15,7 +15,8 @@ export default function CityHistoryDropdown({
         aria-expanded={historyOpen}
         aria-controls="city-history-list"
       >
-        Previously consulted cities {historyOpen ? "↑" : "↓"}
+        <span>Previously consulted cities</span>
+        <span>{historyOpen ? "⏶" : "⏷"}</span>
       </button>
 
       {/* lista de ciudades consultadas anteriormente -- previously consulted cities list */}

@@ -54,9 +54,13 @@ body {
   border: none;
   border-radius: 8px;
   cursor: pointer;
-  box-shadow: #8f9293 1px 1px 2px;
+  box-shadow: #535454 0px 1px 1px;
 }
 
+.search-btn:hover {
+  background-color: #1c5adf;
+  transform: scale(1.05);
+}
 .loading,
 .error {
   text-align: center;
@@ -118,7 +122,6 @@ body {
 
 .detail-box:hover {
   background-color: rgba(255, 255, 255, 0.2);
-  transform: translateX(2px);
 }
 
 .weather-details::-webkit-scrollbar {
@@ -504,6 +507,9 @@ body {
   .dropdown-toggle {
     font-size: 14px;
     padding: 10px 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
   }
 
   .city-history-list {
